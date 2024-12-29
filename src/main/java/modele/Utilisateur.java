@@ -6,6 +6,17 @@ public class Utilisateur {
     private String mail;
     private int telephone;
     
+    public Utilisateur() {
+        super();
+    }
+    
+    public Utilisateur(int id, String nom, String mail, int telephone){
+        this.id = id;
+        this.nom = nom;
+        this.mail= mail;
+        this.telephone = telephone;
+    }
+    
     public int getId(){
         return id;
     }

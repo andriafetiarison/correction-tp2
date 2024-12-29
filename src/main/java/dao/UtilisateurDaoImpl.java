@@ -2,7 +2,12 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import modele.Livre;
 import modele.Utilisateur;
 
 public class UtilisateurDaoImpl implements GenericDao<Utilisateur> {
@@ -47,4 +52,27 @@ public class UtilisateurDaoImpl implements GenericDao<Utilisateur> {
         }
     }
     
+    @Override
+    public List<Utilisateur> afficher() {
+        String sql = "SELECT * FROM utilisateur";
+        List<Utilisateur> utilisateurs = new ArrayList<>();
+
+        try (Connection conn = ConnexionBDD.getConnection(); 
+             Statement stmt = conn.createStatement(); 
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nom = rs.getString("nom");
+                String mail = rs.getString("mail");
+                int telephone = rs.getInt("telephone");
+
+                utilisateurs.add(new Utilisateur(id, nom, mail, telephone));
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
+
+        return utilisateurs;
+    }
 }
