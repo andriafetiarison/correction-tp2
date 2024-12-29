@@ -2,7 +2,11 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import modele.Livre;
 
 
@@ -15,7 +19,7 @@ public class LivreDaoImpl implements GenericDao<Livre> {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, livre.getTitre());
             stmt.setString(2, livre.getAuteur());
-            stmt.setInt(3, livre.getAnnee());
+            stmt.setString(3, livre.getAnnee());
             stmt.setString(4, livre.getGenre());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -30,7 +34,7 @@ public class LivreDaoImpl implements GenericDao<Livre> {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, livre.getTitre());
             stmt.setString(2, livre.getAuteur());
-            stmt.setInt(3, livre.getAnnee());
+            stmt.setString(3, livre.getAnnee());
             stmt.setString(4, livre.getGenre());
             stmt.setInt(5, livre.getId());
             stmt.executeUpdate();
@@ -51,4 +55,28 @@ public class LivreDaoImpl implements GenericDao<Livre> {
         }
     }
     
+    @Override
+    public List<Livre> afficher() {
+        String sql = "SELECT * FROM livre";
+        List<Livre> livres = new ArrayList<>();
+
+        try (Connection conn = ConnexionBDD.getConnection(); 
+             Statement stmt = conn.createStatement(); 
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String titre = rs.getString("titre");
+                String auteur = rs.getString("auteur");
+                String annee = rs.getString("annee");
+                String genre = rs.getString("genre");
+
+                livres.add(new Livre(id, titre, auteur, annee, genre));
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur : " + e.getMessage());
+        }
+
+        return livres;
+    }
 }

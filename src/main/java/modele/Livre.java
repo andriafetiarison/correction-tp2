@@ -4,10 +4,15 @@ public class Livre {
     private int id;
     private String titre;
     private String auteur;
-    private int annee;
+    private String annee;
     private String genre;
     
-    Livre(String titre, String auteur, int annee, String genre){
+    public Livre() {
+        super();
+    }
+    
+    public Livre(int id, String titre, String auteur, String annee, String genre){
+        this.id = id;
         this.titre = titre;
         this.auteur = auteur;
         this.annee = annee;
@@ -16,6 +21,10 @@ public class Livre {
     
     public int getId(){
         return this.id;
+    }
+    
+    public void setId(int id){
+        this.id = id;
     }
     
     public String getTitre(){
@@ -34,11 +43,11 @@ public class Livre {
         this.auteur = auteur;
     }
     
-    public int getAnnee(){
+    public String getAnnee(){
         return this.annee;
     }
     
-    public void setAnnee(int annee){
+    public void setAnnee(String annee){
         this.annee = annee;
     }
     
